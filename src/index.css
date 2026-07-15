@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-cream: #FFF8EE;
+  --color-brand-dark: #2D3748;
+  --color-brand-amber: #C77700;
+  --color-brand-orange: #E89B2E;
+  --color-brand-green: #2F6B4F;
+  --font-editorial: "Georgia", "Playfair Display", serif;
+  
+  --animate-slide-in: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
