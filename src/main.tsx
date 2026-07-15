@@ -3,13 +3,7 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-const rootElement = document.getElementById('root');
-
-if (!rootElement) {
-  throw new Error('Unable to mount application: #root element was not found.');
-}
-
-createRoot(rootElement).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
   </StrictMode>,

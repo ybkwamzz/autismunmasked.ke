@@ -122,7 +122,7 @@ if (!isProd) {
   console.log("Serving built static files in production.");
 }
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Express custom server listening on port ${PORT}`);
 });

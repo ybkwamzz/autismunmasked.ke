@@ -18,3 +18,18 @@
     }
   }
 }
+
+/* Global TTS Read Aloud Interactive Highlights */
+.global-tts-active h1:hover,
+.global-tts-active h2:hover,
+.global-tts-active h3:hover,
+.global-tts-active h4:hover,
+.global-tts-active p:hover,
+.global-tts-active li:hover,
+.global-tts-active blockquote:hover {
+  outline: 2.5px dashed #C77700;
+  outline-offset: 4px;
+  border-radius: 4px;
+  cursor: help;
+  background-color: rgba(199, 119, 0, 0.04);
+}
