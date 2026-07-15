@@ -55,6 +55,32 @@ interface Message {
   time: string;
 }
 
+const safeReadJson = <T,>(key: string, fallback: T): T => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return fallback;
+  }
+
+  try {
+    const saved = window.localStorage.getItem(key);
+    return saved ? (JSON.parse(saved) as T) : fallback;
+  } catch (error) {
+    console.warn(`Unable to read ${key} from localStorage:`, error);
+    return fallback;
+  }
+};
+
+const safeWriteJson = (key: string, value: unknown) => {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`Unable to save ${key} to localStorage:`, error);
+  }
+};
+
 export default function App() {
   // Core States
   const [language, setLanguage] = useState<'en' | 'swa'>('en');
@@ -80,73 +106,61 @@ export default function App() {
   const [storySuccess, setStorySuccess] = useState(false);
 
   // Preloaded stories with localStorage fallback
-  const [stories, setStories] = useState<Story[]>(() => {
-    const saved = localStorage.getItem('autism_unmasked_stories');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        // Fallback below
-      }
+  const defaultStories: Story[] = [
+    {
+      id: '1',
+      name: 'Grace Mwangi',
+      role: 'Parent',
+      location: 'Nairobi',
+      category: 'Our Journey',
+      title: "The Founder's Story: Patience Over Fear",
+      content: "When my son David was 2, he still hadn't spoken his first word. Relatives whispered about family curses, while some doctors dismissed it as simple speech delay. After a correct diagnosis of Autism, we embarked on a journey of intense early intervention. Today, David is attending mainstream schooling, expressing his brilliant mind through painting, and showing everyone that autism is not a curse—it is simply a different way of seeing the world.",
+      date: 'July 2026'
+    },
+    {
+      id: '2',
+      name: 'Amina K.',
+      role: 'Sibling',
+      location: 'Mombasa',
+      category: 'Sibling Voices',
+      title: "My Brother Sees in Colors",
+      content: "My brother Jojo doesn't communicate with words, but his face lights up when he organizes his wooden blocks by color. Learning to understand his unique communication cues completely reshaped how I view humanity. He has taught me that connection transcends language, and his quiet joy is the most beautiful thing in our household.",
+      date: 'June 2026'
+    },
+    {
+      id: '3',
+      name: 'Teacher Juma',
+      role: 'Educator',
+      location: 'Kisumu',
+      category: 'Special Education',
+      title: "Sensory-Friendly Public Classrooms",
+      content: "As a special education teacher in Kisumu, I realized that many autistic students thrive when given visual predictability. By introducing low-cost visual schedules on blackboards and creating a quiet sensory corner with pillows and local beanbags, we have reduced classroom sensory overload by 80%. Our children are learning faster and feeling safer.",
+      date: 'May 2026'
     }
-    return [
-      {
-        id: '1',
-        name: 'Grace Mwangi',
-        role: 'Parent',
-        location: 'Nairobi',
-        category: 'Our Journey',
-        title: "The Founder's Story: Patience Over Fear",
-        content: "When my son David was 2, he still hadn't spoken his first word. Relatives whispered about family curses, while some doctors dismissed it as simple speech delay. After a correct diagnosis of Autism, we embarked on a journey of intense early intervention. Today, David is attending mainstream schooling, expressing his brilliant mind through painting, and showing everyone that autism is not a curse—it is simply a different way of seeing the world.",
-        date: 'July 2026'
-      },
-      {
-        id: '2',
-        name: 'Amina K.',
-        role: 'Sibling',
-        location: 'Mombasa',
-        category: 'Sibling Voices',
-        title: "My Brother Sees in Colors",
-        content: "My brother Jojo doesn't communicate with words, but his face lights up when he organizes his wooden blocks by color. Learning to understand his unique communication cues completely reshaped how I view humanity. He has taught me that connection transcends language, and his quiet joy is the most beautiful thing in our household.",
-        date: 'June 2026'
-      },
-      {
-        id: '3',
-        name: 'Teacher Juma',
-        role: 'Educator',
-        location: 'Kisumu',
-        category: 'Special Education',
-        title: "Sensory-Friendly Public Classrooms",
-        content: "As a special education teacher in Kisumu, I realized that many autistic students thrive when given visual predictability. By introducing low-cost visual schedules on blackboards and creating a quiet sensory corner with pillows and local beanbags, we have reduced classroom sensory overload by 80%. Our children are learning faster and feeling safer.",
-        date: 'May 2026'
-      }
-    ];
-  });
+  ];
+
+  const [stories, setStories] = useState<Story[]>(() => safeReadJson('autism_unmasked_stories', defaultStories));
 
   // Save stories to local storage
   useEffect(() => {
-    localStorage.setItem('autism_unmasked_stories', JSON.stringify(stories));
+    safeWriteJson('autism_unmasked_stories', stories);
     setStoriesCount(153 + stories.length - 3); // Update count dynamically
   }, [stories]);
 
   // --- Therapy Toolkit 1: Visual Schedules State & Handlers ---
-  const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>(() => {
-    const saved = localStorage.getItem('autism_unmasked_schedule');
-    if (saved) {
-      try { return JSON.parse(saved); } catch(e) {}
-    }
-    return [
-      { id: 's1', time: '07:30 AM', task: 'Brush Teeth', icon: '🪥', done: false },
-      { id: 's2', time: '08:00 AM', task: 'Eat Breakfast', icon: '🍳', done: false },
-      { id: 's3', time: '09:00 AM', task: 'Study Time', icon: '📝', done: false },
-      { id: 's4', time: '04:00 PM', task: 'Play Outside', icon: '⚽', done: false },
-      { id: 's5', time: '07:30 PM', task: 'Take a Bath', icon: '🛀', done: false },
-      { id: 's6', time: '08:30 PM', task: 'Bedtime Story & Sleep', icon: '🛌', done: false },
-    ];
-  });
+  const defaultScheduleItems: ScheduleItem[] = [
+    { id: 's1', time: '07:30 AM', task: 'Brush Teeth', icon: '🪥', done: false },
+    { id: 's2', time: '08:00 AM', task: 'Eat Breakfast', icon: '🍳', done: false },
+    { id: 's3', time: '09:00 AM', task: 'Study Time', icon: '📝', done: false },
+    { id: 's4', time: '04:00 PM', task: 'Play Outside', icon: '⚽', done: false },
+    { id: 's5', time: '07:30 PM', task: 'Take a Bath', icon: '🛀', done: false },
+    { id: 's6', time: '08:30 PM', task: 'Bedtime Story & Sleep', icon: '🛌', done: false },
+  ];
+
+  const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>(() => safeReadJson('autism_unmasked_schedule', defaultScheduleItems));
 
   useEffect(() => {
-    localStorage.setItem('autism_unmasked_schedule', JSON.stringify(scheduleItems));
+    safeWriteJson('autism_unmasked_schedule', scheduleItems);
   }, [scheduleItems]);
 
   const [newScheduleTask, setNewScheduleTask] = useState('');
