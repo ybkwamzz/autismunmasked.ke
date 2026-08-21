@@ -1,0 +1,90 @@
+[
+  {
+    "id": "sch-join-group-01",
+    "type": "scenario",
+    "setting": "school",
+    "communication_goal": "requesting to join an activity",
+    "difficulty": 1,
+    "video_id": "",
+    "start_seconds": 0,
+    "end_seconds": 0,
+    "interaction_points": [
+      {
+        "at_seconds": 0,
+        "prompt": "What can you say when you want to join the group activity?",
+        "options": [
+          { "id": "ask-join", "text": "Can I join, please?" },
+          { "id": "grab-toy", "text": "Take the materials without asking" }
+        ],
+        "correct_option_id": "ask-join"
+      }
+    ],
+    "related_scenario_ids": ["sch-ask-help-01"]
+  },
+  {
+    "id": "sch-ask-help-01",
+    "type": "scenario",
+    "setting": "school",
+    "communication_goal": "asking a teacher or peer for help",
+    "difficulty": 1,
+    "video_id": "",
+    "start_seconds": 0,
+    "end_seconds": 0,
+    "interaction_points": [
+      {
+        "at_seconds": 0,
+        "prompt": "What is a clear way to ask for help at school?",
+        "options": [
+          { "id": "ask-help", "text": "Please help me with this." },
+          { "id": "walk-away", "text": "Walk away without telling anyone" }
+        ],
+        "correct_option_id": "ask-help"
+      }
+    ],
+    "related_scenario_ids": ["sch-join-group-01"]
+  },
+  {
+    "id": "hom-ask-snack-01",
+    "type": "scenario",
+    "setting": "home",
+    "communication_goal": "asking a parent for something wanted",
+    "difficulty": 1,
+    "video_id": "",
+    "start_seconds": 0,
+    "end_seconds": 0,
+    "interaction_points": [
+      {
+        "at_seconds": 0,
+        "prompt": "What can you say when you want a snack?",
+        "options": [
+          { "id": "ask-snack", "text": "May I have a snack, please?" },
+          { "id": "shout", "text": "Shout until someone guesses" }
+        ],
+        "correct_option_id": "ask-snack"
+      }
+    ],
+    "related_scenario_ids": ["hom-end-playtime-01"]
+  },
+  {
+    "id": "hom-end-playtime-01",
+    "type": "scenario",
+    "setting": "home",
+    "communication_goal": "ending an activity and transitioning smoothly",
+    "difficulty": 2,
+    "video_id": "",
+    "start_seconds": 0,
+    "end_seconds": 0,
+    "interaction_points": [
+      {
+        "at_seconds": 0,
+        "prompt": "Playtime is ending. What helps with a calm transition?",
+        "options": [
+          { "id": "choose-next", "text": "Say: one more minute, then I will clean up." },
+          { "id": "hide-toys", "text": "Hide the toys and keep playing" }
+        ],
+        "correct_option_id": "choose-next"
+      }
+    ],
+    "related_scenario_ids": ["hom-ask-snack-01"]
+  }
+]

@@ -27,6 +27,7 @@ import AacCards from './components/AacCards';
 import AacSentenceBoard from './components/AacSentenceBoard';
 import SensoryCalming from './components/SensoryCalming';
 import Blog from './components/Blog';
+import MicroLesson from './components/MicroLesson';
 
 // Navigation layout wrapper to read router context
 function AppLayout() {
@@ -502,6 +503,10 @@ function AppLayout() {
           <Route 
             path="/toolkit/calm" 
             element={<SensoryCalming language={language} />} 
+          />
+          <Route 
+            path="/toolkit/micro-lesson" 
+            element={<MicroLesson language={language} />} 
           />
           <Route 
             path="/blog" 
