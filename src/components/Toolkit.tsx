@@ -27,7 +27,7 @@ export default function Toolkit({ language }: ToolkitProps) {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         
         {/* Toolkit 1: Visual Schedules */}
         <div className="bg-white rounded-[28px] p-6 border border-[#C77700]/10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between hover:-translate-y-1">
@@ -102,6 +102,26 @@ export default function Toolkit({ language }: ToolkitProps) {
             className="w-full bg-[#2F6B4F] hover:bg-[#1e4432] text-center text-white py-3 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-colors cursor-pointer block"
           >
             {language === 'en' ? 'Enter Sensory Space' : 'Ingia Chumba Tulivu'}
+          </Link>
+        </div>
+
+
+        {/* Toolkit 5: Micro-Lesson */}
+        <div className="bg-white rounded-[28px] p-6 border border-[#C77700]/10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between hover:-translate-y-1">
+          <div>
+            <div className="w-12 h-12 bg-[#2F6B4F]/10 rounded-2xl flex items-center justify-center text-2xl mb-4">🌍</div>
+            <h3 className="text-xl font-bold text-[#2D3748] mb-2">{language === 'en' ? 'Micro-Lessons' : 'Masomo Mafupi'}</h3>
+            <p className="text-xs text-gray-500 mb-6 leading-relaxed">
+              {language === 'en' 
+                ? 'Practice four-beat concept lessons and Autism World social communication scenarios with simple session mastery.' 
+                : 'Fanya mazoezi ya dhana na hali za mawasiliano kwa kutumia ufuatiliaji rahisi wa kikao.'}
+            </p>
+          </div>
+          <Link 
+            to="/toolkit/micro-lesson"
+            className="w-full bg-[#C77700] hover:bg-[#a76300] text-center text-white py-3 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-colors cursor-pointer block"
+          >
+            {language === 'en' ? 'Start Lessons' : 'Anza Masomo'}
           </Link>
         </div>
 
