@@ -16,7 +16,12 @@ import {
   Volume2, 
   Send, 
   CheckCircle,
-  HelpCircle
+  HelpCircle,
+  Wifi,
+  WifiOff,
+  Sun,
+  Moon,
+  Compass
 } from 'lucide-react';
 
 import { Story, Message } from './types';
@@ -27,7 +32,8 @@ import AacCards from './components/AacCards';
 import AacSentenceBoard from './components/AacSentenceBoard';
 import SensoryCalming from './components/SensoryCalming';
 import Blog from './components/Blog';
-import MicroLesson from './components/MicroLesson';
+import VoiceNavigator from './components/VoiceNavigator';
+import AppTourModal from './components/AppTourModal';
 
 // Navigation layout wrapper to read router context
 function AppLayout() {
@@ -36,8 +42,41 @@ function AppLayout() {
 
   // Global State
   const [language, setLanguage] = useState<'en' | 'swa'>('en');
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('autism_unmasked_dark_mode') === 'true';
+  });
   const [activeModal, setActiveModal] = useState<null | 'video' | 'donate'>(null);
+  const [isTourOpen, setIsTourOpen] = useState(false);
   const [voiceSpeechAlert, setVoiceSpeechAlert] = useState<string | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('autism_unmasked_dark_mode', darkMode ? 'true' : 'false');
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  // Connection tracking for offline capabilities
+  const [isOnline, setIsOnline] = useState<boolean>(() => {
+    return typeof navigator !== 'undefined' ? navigator.onLine : true;
+  });
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Global TTS State
   const [globalTts, setGlobalTts] = useState<boolean>(() => {
@@ -47,6 +86,40 @@ function AppLayout() {
   // Dynamic Impact Counters (start with base, increment on action)
   const [familiesCount, setFamiliesCount] = useState(2410);
   const [storiesCount, setStoriesCount] = useState(153);
+
+  // Local Statistics Object with localStorage persistence
+  const [localStats, setLocalStats] = useState(() => {
+    const saved = localStorage.getItem('autism_unmasked_local_stats');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.downloadsCount === 'number') {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return {
+      downloadsCount: 1420, // Baseline resource downloads
+      scheduleDownloads: 812,
+      cardsDownloads: 418,
+      boardDownloads: 190
+    };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('autism_unmasked_local_stats', JSON.stringify(localStats));
+  }, [localStats]);
+
+  const trackDownload = (resourceType: string) => {
+    setLocalStats((prev: any) => ({
+      ...prev,
+      downloadsCount: prev.downloadsCount + 1,
+      [`${resourceType}Downloads`]: (prev[`${resourceType}Downloads`] || 0) + 1
+    }));
+    
+    // Increment familiesCount to reflect dynamic community growth on action!
+    setFamiliesCount(prev => prev + 1);
+  };
 
   // Preloaded stories with localStorage fallback
   const [stories, setStories] = useState<Story[]>(() => {
@@ -341,9 +414,12 @@ function AppLayout() {
   return (
     <div 
       id="app-container" 
-      className={`min-h-screen bg-[#FFF8EE] text-[#2D3748] font-sans flex flex-col antialiased ${globalTts ? 'global-tts-active' : ''}`}
+      className={`min-h-screen bg-[#FFF8EE] text-[#2D3748] font-sans flex flex-col antialiased ${globalTts ? 'global-tts-active' : ''} ${darkMode ? 'dark' : ''}`}
     >
       
+      {/* Voice Recognition Command Feature for Navigation */}
+      <VoiceNavigator language={language} onAlert={setVoiceSpeechAlert} />
+
       {/* Floating sub-titles alert for screen-reader/audio playback visualization */}
       {voiceSpeechAlert && (
         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-[#2D3748] text-white px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-2 shadow-2xl border border-white/20 animate-bounce">
@@ -355,7 +431,7 @@ function AppLayout() {
       {/* Header Navigation */}
       <header className="sticky top-0 z-40 flex items-center justify-between px-4 sm:px-8 h-20 border-b border-[#C77700]/20 bg-[#FFF8EE]/95 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#C77700] rounded-xl flex items-center justify-center text-white font-serif font-black text-xl shadow-md shadow-[#C77700]/10">
+          <div className="w-10 h-10 bg-[#C77700] rounded-xl flex items-center justify-center text-white font-serif font-black text-xl shadow-md shadow-[#C77700]/10 shrink-0">
             U
           </div>
           <div>
@@ -363,6 +439,25 @@ function AppLayout() {
               Autism <span className="text-[#C77700]">Unmasked</span>
             </h1>
             <span className="text-[10px] sm:text-xs font-semibold text-[#2F6B4F] uppercase tracking-widest block">Kenya Support Hub</span>
+          </div>
+
+          {/* Connection offline-ready Badge */}
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-full border border-gray-100 shadow-sm ml-2 shrink-0">
+            {isOnline ? (
+              <>
+                <Wifi className="w-3.5 h-3.5 text-green-600 shrink-0" />
+                <span className="text-[9px] font-extrabold text-gray-500 uppercase tracking-wider">
+                  {language === 'en' ? 'Online • Toolkit Synced' : 'Mtandao • Zana zimesawazishwa'}
+                </span>
+              </>
+            ) : (
+              <>
+                <WifiOff className="w-3.5 h-3.5 text-amber-500 shrink-0 animate-pulse" />
+                <span className="text-[9px] font-extrabold text-amber-600 uppercase tracking-wider">
+                  {language === 'en' ? 'Offline Mode • Saved' : 'Nje ya Mtandao • Zimehifadhiwa'}
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -389,6 +484,22 @@ function AppLayout() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* App Tour Interactive Voice Sequence Button */}
+          <button
+            id="app-tour-btn"
+            onClick={() => setIsTourOpen(true)}
+            className="flex items-center gap-1.5 text-xs font-extrabold border-2 border-[#C77700] bg-[#C77700]/10 hover:bg-[#C77700]/20 text-[#C77700] px-3 py-1.5 rounded-full transition-all cursor-pointer shadow-xs"
+            title={language === 'en' ? 'Start Voice App Tour' : 'Anza Mwongozo wa Sauti'}
+          >
+            <Compass className="w-3.5 h-3.5 text-[#C77700]" />
+            <span className="hidden sm:inline">
+              {language === 'en' ? 'App Tour' : 'Mwongozo'}
+            </span>
+            <span className="sm:hidden">
+              Tour
+            </span>
+          </button>
+
           {/* Global Text-to-Speech Accessibility Toggle */}
           <button 
             id="global-tts-btn"
@@ -451,6 +562,21 @@ function AppLayout() {
             <span>{language === 'en' ? 'EN / SWA' : 'SWA / EN'}</span>
           </button>
 
+          {/* Dark Mode Toggle */}
+          <button 
+            id="dark-mode-toggle"
+            onClick={() => setDarkMode(!darkMode)}
+            className="flex items-center gap-1.5 text-xs font-extrabold border-2 border-gray-300 text-gray-500 px-2.5 py-1.5 rounded-full hover:bg-gray-100 dark:border-white/20 dark:text-gray-300 dark:hover:bg-white/5 transition-all cursor-pointer"
+            title={language === 'en' ? 'Toggle Dark Mode' : 'Washa/Zima Hali ya Giza'}
+          >
+            {darkMode ? <Sun className="w-3.5 h-3.5 text-amber-500 animate-pulse" /> : <Moon className="w-3.5 h-3.5 text-gray-500" />}
+            <span className="hidden sm:inline">
+              {darkMode 
+                ? (language === 'en' ? 'Light Mode' : 'Mwangaza') 
+                : (language === 'en' ? 'Dark Mode' : 'Hali ya Giza')}
+            </span>
+          </button>
+
           {/* Donate CTA Button */}
           <button 
             id="donate-btn"
@@ -475,6 +601,7 @@ function AppLayout() {
                 onOpenModal={setActiveModal} 
                 recentStories={stories} 
                 onOpenLumo={() => setIsLumoChatOpen(true)} 
+                onOpenTour={() => setIsTourOpen(true)}
               />
             } 
           />
@@ -484,7 +611,12 @@ function AppLayout() {
           />
           <Route 
             path="/toolkit/schedule" 
-            element={<VisualSchedule language={language} />} 
+            element={
+              <VisualSchedule 
+                language={language} 
+                onDownload={() => trackDownload('schedule')} 
+              />
+            } 
           />
           <Route 
             path="/toolkit/cards" 
@@ -493,20 +625,23 @@ function AppLayout() {
                 language={language} 
                 onSpeak={speakText} 
                 voiceSpeechAlert={voiceSpeechAlert} 
+                onDownload={() => trackDownload('cards')}
               />
             } 
           />
           <Route 
             path="/toolkit/board" 
-            element={<AacSentenceBoard language={language} onSpeak={speakText} />} 
+            element={
+              <AacSentenceBoard 
+                language={language} 
+                onSpeak={speakText} 
+                onDownload={() => trackDownload('board')} 
+              />
+            } 
           />
           <Route 
             path="/toolkit/calm" 
             element={<SensoryCalming language={language} />} 
-          />
-          <Route 
-            path="/toolkit/micro-lesson" 
-            element={<MicroLesson language={language} />} 
           />
           <Route 
             path="/blog" 
@@ -518,6 +653,7 @@ function AppLayout() {
                 familiesCount={familiesCount}
                 setFamiliesCount={setFamiliesCount}
                 storiesCount={storiesCount}
+                downloadsCount={localStats.downloadsCount}
               />
             } 
           />
@@ -681,12 +817,25 @@ function AppLayout() {
                   <span className="text-[9px] uppercase font-bold tracking-widest text-[#2F6B4F] block">Autism Unmasked Expert</span>
                 </div>
               </div>
-              <button 
-                onClick={() => setIsLumoChatOpen(false)}
-                className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setIsLumoChatOpen(false);
+                    setIsTourOpen(true);
+                  }}
+                  className="text-[10px] font-extrabold text-[#C77700] bg-[#C77700]/10 border border-[#C77700]/20 px-2.5 py-1 rounded-full hover:bg-[#C77700]/20 transition-colors flex items-center gap-1 cursor-pointer"
+                  title={language === 'en' ? 'Start App Tour' : 'Anza Mwongozo'}
+                >
+                  <Compass className="w-3 h-3" />
+                  <span>{language === 'en' ? 'App Tour' : 'Mwongozo'}</span>
+                </button>
+                <button 
+                  onClick={() => setIsLumoChatOpen(false)}
+                  className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </header>
 
             {/* Chat Messages Log */}
@@ -775,6 +924,15 @@ function AppLayout() {
           </div>
         </div>
       )}
+
+      {/* Interactive App Tour Modal */}
+      <AppTourModal 
+        isOpen={isTourOpen} 
+        onClose={() => setIsTourOpen(false)} 
+        language={language} 
+        speakText={speakText} 
+        onOpenLumo={() => setIsLumoChatOpen(true)} 
+      />
 
     </div>
   );

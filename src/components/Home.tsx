@@ -1,20 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play, BookMarked, ArrowRight } from 'lucide-react';
+import { Play, BookMarked, ArrowRight, Compass } from 'lucide-react';
 import { Story } from '../types';
+import InspirationalQuoteWidget from './InspirationalQuoteWidget';
 
 interface HomeProps {
   language: 'en' | 'swa';
   onOpenModal: (modalName: 'video' | 'donate') => void;
   recentStories: Story[];
   onOpenLumo: () => void;
+  onOpenTour?: () => void;
 }
 
 export default function Home({
   language,
   onOpenModal,
   recentStories,
-  onOpenLumo
+  onOpenLumo,
+  onOpenTour
 }: HomeProps) {
   return (
     <div className="flex flex-col gap-12 w-full">
@@ -50,7 +53,16 @@ export default function Home({
                   : "Kushiriki hadithi halisi, kuvunja dhana mbaya, na kusaidia familia nchini Kenya kujenga jamii yenye usawa ambapo kila akili inathaminiwa."}
               </p>
               
-              <div className="mt-6 flex flex-wrap gap-4">
+              <div className="mt-6 flex flex-wrap gap-3">
+                {onOpenTour && (
+                  <button 
+                    onClick={onOpenTour}
+                    className="flex items-center gap-2 bg-[#C77700] hover:bg-[#a66200] text-white px-5 py-3 rounded-full text-xs font-extrabold tracking-wider uppercase transition-transform transform hover:scale-105 cursor-pointer shadow-lg border border-white/20"
+                  >
+                    <Compass className="w-4 h-4 animate-spin-slow" />
+                    <span>{language === 'en' ? 'Start App Tour' : 'Anza Mwongozo'}</span>
+                  </button>
+                )}
                 <button 
                   onClick={() => onOpenModal('video')}
                   className="flex items-center gap-2 bg-[#E89B2E] hover:bg-[#d1841e] text-[#2D3748] px-5 py-3 rounded-full text-xs font-extrabold tracking-wider uppercase transition-transform transform hover:scale-105 cursor-pointer"
@@ -125,6 +137,14 @@ export default function Home({
           </div>
         </div>
       </div>
+
+      {/* Daily Inspirational Encouragement for Parents */}
+      <section id="daily-inspiration" className="w-full">
+        <InspirationalQuoteWidget 
+          language={language} 
+          onOpenLumo={onOpenLumo} 
+        />
+      </section>
 
       {/* Therapy Toolkit Preview Section */}
       <section className="bg-[#FFF8EE] border-t-2 border-[#C77700]/10 pt-8">
