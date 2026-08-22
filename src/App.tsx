@@ -27,6 +27,7 @@ import {
 import { Story, Message } from './types';
 import Home from './components/Home';
 import Toolkit from './components/Toolkit';
+import MicroLesson from './components/MicroLesson';
 import VisualSchedule from './components/VisualSchedule';
 import AacCards from './components/AacCards';
 import AacSentenceBoard from './components/AacSentenceBoard';
@@ -642,6 +643,10 @@ function AppLayout() {
           <Route 
             path="/toolkit/calm" 
             element={<SensoryCalming language={language} />} 
+          />
+          <Route 
+            path="/toolkit/micro-lesson" 
+            element={<MicroLesson language={language} />} 
           />
           <Route 
             path="/blog" 
