@@ -4,7 +4,7 @@ import {
   Bookmark, BookmarkCheck, Heart, Sparkles, FolderHeart, 
   Mail, Share2, FileText, MapPin, Calendar, HelpCircle, Info, MessageSquare, Sparkle,
   Search, X, Volume2, Download, CheckCircle2, AlertCircle,
-  GraduationCap, CalendarDays, AudioLines, Rows3, Wind,
+  GraduationCap, CalendarDays, AudioLines, Rows3, Wind, Clapperboard,
   type LucideIcon
 } from 'lucide-react';
 
@@ -285,7 +285,7 @@ export default function Toolkit({ language }: ToolkitProps) {
     },
     {
       id: 'autism-world',
-      icon: '🎬',
+      icon: Clapperboard,
       bgIcon: 'bg-[#2F6B4F]/10',
       titleEn: 'Autism World Scenarios',
       titleSw: 'Matukio ya Autism World',
@@ -294,18 +294,6 @@ export default function Toolkit({ language }: ToolkitProps) {
       path: '/autism-world',
       buttonTextEn: 'Launch Autism World',
       buttonTextSw: 'Fungua Autism World'
-    },
-    {
-      id: 'micro-lesson',
-      icon: '🧩',
-      bgIcon: 'bg-[#E89B2E]/10',
-      titleEn: 'Micro-Lessons & Spaced Repetition',
-      titleSw: 'Mafunzo ya Haraka & Kumbukumbu',
-      descEn: 'Four-beat concept lessons (what, does, used for, found) with spaced repetition review scheduler.',
-      descSw: 'Mafunzo ya hatua 4 ya msamiati yenye mfumo wa marudio ya kumbukumbu (spaced repetition).',
-      path: '/toolkit/micro-lesson',
-      buttonTextEn: 'Start Micro-Lessons',
-      buttonTextSw: 'Anza Mafunzo'
     }
   ];
 

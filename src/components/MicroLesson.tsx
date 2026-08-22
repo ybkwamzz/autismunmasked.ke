@@ -42,10 +42,25 @@ function getDueAt(node: LessonNode, mastery: Record<string, MasteryEntry>) {
   return entry.lastSeenAt + interval;
 }
 
-export default function MicroLesson({ language }: { language: 'en' | 'swa' }) {
+export default function MicroLesson({
+  language,
+  initialFilter
+}: {
+  language: 'en' | 'swa';
+  initialFilter?: 'scenario';
+}) {
+  // When initialFilter="scenario" (the /autism-world entry point), show
+  // only the video/scenario nodes, not the 8 concept vocabulary cards —
+  // this is what makes /autism-world a distinct, scoped view rather than
+  // a duplicate of the full /toolkit/micro-lesson lesson list.
+  const nodes = useMemo(
+    () => (initialFilter === 'scenario' ? SCENARIOS : LESSON_NODES),
+    [initialFilter]
+  );
+
   const [mastery, setMastery] = useState<Record<string, MasteryEntry>>({});
   const [simulatedNow, setSimulatedNow] = useState(() => Date.now());
-  const [activeNode, setActiveNode] = useState<LessonNode>(() => LESSON_NODES[0]);
+  const [activeNode, setActiveNode] = useState<LessonNode>(() => nodes[0]);
   const [beatIndex, setBeatIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [message, setMessage] = useState('Tap start to begin the next micro-lesson.');
@@ -59,8 +74,8 @@ export default function MicroLesson({ language }: { language: 'en' | 'swa' }) {
   );
 
   const sortedNodes = useMemo(() => {
-    return [...LESSON_NODES].sort((a, b) => getDueAt(a, mastery) - getDueAt(b, mastery));
-  }, [mastery]);
+    return [...nodes].sort((a, b) => getDueAt(a, mastery) - getDueAt(b, mastery));
+  }, [nodes, mastery]);
 
   const pickNextLesson = () => {
     const due = sortedNodes.find(node => getDueAt(node, mastery) <= simulatedNow);
@@ -123,7 +138,7 @@ export default function MicroLesson({ language }: { language: 'en' | 'swa' }) {
         <aside className="rounded-[28px] border border-[#C77700]/10 bg-white p-4 shadow-sm">
           <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-[#2F6B4F]">Choose lesson node</h3>
           <div className="space-y-2">
-            {LESSON_NODES.map(node => (
+            {nodes.map(node => (
               <button key={node.id} onClick={() => startLesson(node)} className={`w-full rounded-2xl border px-3 py-2 text-left text-xs font-bold transition ${activeNode.id === node.id ? 'border-[#C77700] bg-[#C77700]/10' : 'border-gray-100 hover:border-[#C77700]/40'}`}>
                 <span className="block text-[10px] uppercase tracking-wider text-gray-400">{node.type}</span>
                 {node.type === 'concept' ? `${node.icon} ${node.label}` : `${node.setting}: ${node.communication_goal}`}
