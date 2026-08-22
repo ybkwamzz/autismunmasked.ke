@@ -5,12 +5,12 @@
     "setting": "school",
     "communication_goal": "requesting to join an activity",
     "difficulty": 1,
-    "video_id": "",
+    "video_id": "toUjy_Gzh3o",
     "start_seconds": 0,
-    "end_seconds": 0,
+    "end_seconds": 73,
     "interaction_points": [
       {
-        "at_seconds": 0,
+        "at_seconds": 27,
         "prompt": "What can you say when you want to join the group activity?",
         "options": [
           { "id": "ask-join", "text": "Can I join, please?" },
@@ -27,12 +27,12 @@
     "setting": "school",
     "communication_goal": "asking a teacher or peer for help",
     "difficulty": 1,
-    "video_id": "",
+    "video_id": "5P-89FdwlGc",
     "start_seconds": 0,
-    "end_seconds": 0,
+    "end_seconds": 79,
     "interaction_points": [
       {
-        "at_seconds": 0,
+        "at_seconds": 18,
         "prompt": "What is a clear way to ask for help at school?",
         "options": [
           { "id": "ask-help", "text": "Please help me with this." },
@@ -49,12 +49,12 @@
     "setting": "home",
     "communication_goal": "asking a parent for something wanted",
     "difficulty": 1,
-    "video_id": "",
+    "video_id": "a9W4fEVTFHY",
     "start_seconds": 0,
-    "end_seconds": 0,
+    "end_seconds": 62,
     "interaction_points": [
       {
-        "at_seconds": 0,
+        "at_seconds": 22,
         "prompt": "What can you say when you want a snack?",
         "options": [
           { "id": "ask-snack", "text": "May I have a snack, please?" },
