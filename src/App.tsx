@@ -27,12 +27,12 @@ import {
 import { Story, Message } from './types';
 import Home from './components/Home';
 import Toolkit from './components/Toolkit';
-import MicroLesson from './components/MicroLesson';
 import VisualSchedule from './components/VisualSchedule';
 import AacCards from './components/AacCards';
 import AacSentenceBoard from './components/AacSentenceBoard';
 import SensoryCalming from './components/SensoryCalming';
 import Blog from './components/Blog';
+import MicroLesson from './components/MicroLesson';
 import VoiceNavigator from './components/VoiceNavigator';
 import AppTourModal from './components/AppTourModal';
 
@@ -409,7 +409,8 @@ function AppLayout() {
   };
 
   const isHomeActive = currentPath === '/';
-  const isToolkitActive = currentPath.startsWith('/toolkit');
+  const isToolkitActive = currentPath.startsWith('/toolkit') && !currentPath.includes('autism-world') && !currentPath.includes('micro-lesson');
+  const isAutismWorldActive = currentPath === '/autism-world' || currentPath.includes('autism-world') || currentPath.includes('micro-lesson');
   const isStoriesActive = currentPath.startsWith('/blog');
 
   return (
@@ -463,12 +464,23 @@ function AppLayout() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-[#2D3748]/80">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-bold uppercase tracking-widest text-[#2D3748]/80">
           <Link 
             to="/" 
             className={`transition-colors cursor-pointer ${isHomeActive ? 'text-[#C77700]' : 'hover:text-[#C77700]'}`}
           >
             {language === 'en' ? 'Home' : 'Mwanzo'}
+          </Link>
+          <Link 
+            to="/autism-world" 
+            className={`transition-colors cursor-pointer flex items-center gap-1.5 px-3 py-1 rounded-full ${
+              isAutismWorldActive 
+                ? 'bg-[#2F6B4F] text-white shadow-xs' 
+                : 'bg-[#2F6B4F]/10 text-[#2F6B4F] hover:bg-[#2F6B4F]/20'
+            }`}
+          >
+            <span className="text-sm">🎬</span>
+            <span>{language === 'en' ? 'Autism World' : 'Autism World'}</span>
           </Link>
           <Link 
             to="/toolkit" 
@@ -643,6 +655,14 @@ function AppLayout() {
           <Route 
             path="/toolkit/calm" 
             element={<SensoryCalming language={language} />} 
+          />
+          <Route 
+            path="/autism-world" 
+            element={<MicroLesson language={language} initialFilter="scenario" />} 
+          />
+          <Route 
+            path="/toolkit/autism-world" 
+            element={<MicroLesson language={language} initialFilter="scenario" />} 
           />
           <Route 
             path="/toolkit/micro-lesson" 

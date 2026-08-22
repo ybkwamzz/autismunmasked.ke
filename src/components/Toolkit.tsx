@@ -111,6 +111,17 @@ const quickShortcuts: QuickShortcut[] = [
     path: '/toolkit/calm',
     keywords: ['calm', 'relax', 'sensory', 'overload', 'meltdown', 'anxiety', 'panic', 'noise', 'tuliza', 'ghadhabu', 'hasira', 'hofu', 'fujo'],
     type: 'calm'
+  },
+  {
+    id: 'sc-autism-world',
+    titleEn: 'Autism World Scenarios',
+    titleSw: 'Matukio ya Autism World',
+    descEn: 'Real-world school & home communication scenarios with video player and bounded practice choices.',
+    descSw: 'Matukio ya kijamii ya shuleni na nyumbani yenye maswali shirikishi ya mazoezi.',
+    icon: '🎬',
+    path: '/autism-world',
+    keywords: ['autism world', 'scenario', 'social story', 'school', 'home', 'communication', 'video', 'practice', 'matukio', 'shule', 'nyumbani', 'mafunzo'],
+    type: 'visual'
   }
 ];
 
@@ -271,6 +282,30 @@ export default function Toolkit({ language }: ToolkitProps) {
       path: '/toolkit/calm',
       buttonTextEn: 'Enter Sensory Space',
       buttonTextSw: 'Ingia Chumba Tulivu'
+    },
+    {
+      id: 'autism-world',
+      icon: '🎬',
+      bgIcon: 'bg-[#2F6B4F]/10',
+      titleEn: 'Autism World Scenarios',
+      titleSw: 'Matukio ya Autism World',
+      descEn: 'Real-life social & communication video scenarios in school and home settings with guided practice.',
+      descSw: 'Matukio ya kijamii ya shuleni na nyumbani yenye maswali shirikishi na video kwa ajili ya watoto.',
+      path: '/autism-world',
+      buttonTextEn: 'Launch Autism World',
+      buttonTextSw: 'Fungua Autism World'
+    },
+    {
+      id: 'micro-lesson',
+      icon: '🧩',
+      bgIcon: 'bg-[#E89B2E]/10',
+      titleEn: 'Micro-Lessons & Spaced Repetition',
+      titleSw: 'Mafunzo ya Haraka & Kumbukumbu',
+      descEn: 'Four-beat concept lessons (what, does, used for, found) with spaced repetition review scheduler.',
+      descSw: 'Mafunzo ya hatua 4 ya msamiati yenye mfumo wa marudio ya kumbukumbu (spaced repetition).',
+      path: '/toolkit/micro-lesson',
+      buttonTextEn: 'Start Micro-Lessons',
+      buttonTextSw: 'Anza Mafunzo'
     }
   ];
 

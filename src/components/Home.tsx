@@ -63,6 +63,13 @@ export default function Home({
                     <span>{language === 'en' ? 'Start App Tour' : 'Anza Mwongozo'}</span>
                   </button>
                 )}
+                <Link 
+                  to="/autism-world"
+                  className="flex items-center gap-2 bg-[#2F6B4F] hover:bg-[#23533d] text-white px-5 py-3 rounded-full text-xs font-extrabold tracking-wider uppercase transition-transform transform hover:scale-105 cursor-pointer shadow-lg border border-white/20"
+                >
+                  <span>🎬</span>
+                  <span>{language === 'en' ? 'Autism World' : 'Autism World'}</span>
+                </Link>
                 <button 
                   onClick={() => onOpenModal('video')}
                   className="flex items-center gap-2 bg-[#E89B2E] hover:bg-[#d1841e] text-[#2D3748] px-5 py-3 rounded-full text-xs font-extrabold tracking-wider uppercase transition-transform transform hover:scale-105 cursor-pointer"
