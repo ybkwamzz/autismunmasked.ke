@@ -211,6 +211,18 @@ export default function Toolkit({ language }: ToolkitProps) {
 
   const tools: ToolItem[] = [
     {
+      id: 'micro-lesson',
+      icon: '🎓',
+      bgIcon: 'bg-[#2F6B4F]/10',
+      titleEn: 'Autism World — Practice',
+      titleSw: 'Dunia ya Autism — Mazoezi',
+      descEn: 'Guided social-communication scenarios and concept lessons with spaced repetition, for school and home settings.',
+      descSw: 'Mazoezi ya mawasiliano ya kijamii na masomo ya dhana kwa marudio, kwa mazingira ya shule na nyumbani.',
+      path: '/toolkit/micro-lesson',
+      buttonTextEn: 'Start Practice',
+      buttonTextSw: 'Anza Mazoezi'
+    },
+    {
       id: 'schedule',
       icon: '🗂',
       bgIcon: 'bg-[#C77700]/10',
