@@ -50,6 +50,14 @@ export default function MicroLesson({ language }: { language: 'en' | 'swa' }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [message, setMessage] = useState('Tap start to begin the next micro-lesson.');
 
+  // Demo-only controls (clock skip, mastery reset) are hidden from the
+  // default learner view and only shown when explicitly requested via
+  // ?demo=true, so a child can't tap into a mastery reset mid-session.
+  const isDemoMode = useMemo(
+    () => new URLSearchParams(window.location.search).get('demo') === 'true',
+    []
+  );
+
   const sortedNodes = useMemo(() => {
     return [...LESSON_NODES].sort((a, b) => getDueAt(a, mastery) - getDueAt(b, mastery));
   }, [mastery]);
@@ -103,10 +111,12 @@ export default function MicroLesson({ language }: { language: 'en' | 'swa' }) {
           <h2 className="mt-1 font-serif text-3xl font-bold text-[#2D3748]">{language === 'en' ? 'Learning Path' : 'Njia ya Kujifunza'}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-500">Concept beats and Autism World scenarios share one session mastery and spaced repetition scheduler.</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button onClick={() => setSimulatedNow(now => now + DAY_MS)} className="rounded-full bg-[#2D3748] px-4 py-2 text-xs font-black uppercase tracking-wider text-white">Skip sim. clock +1 day</button>
-          <button onClick={() => { setMastery({}); setMessage('Demo mastery reset for this session.'); }} className="rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-[#2D3748] border border-[#C77700]/20">Reset mastery</button>
-        </div>
+        {isDemoMode && (
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => setSimulatedNow(now => now + DAY_MS)} className="rounded-full bg-[#2D3748] px-4 py-2 text-xs font-black uppercase tracking-wider text-white">Skip sim. clock +1 day</button>
+            <button onClick={() => { setMastery({}); setMessage('Demo mastery reset for this session.'); }} className="rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-wider text-[#2D3748] border border-[#C77700]/20">Reset mastery</button>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
