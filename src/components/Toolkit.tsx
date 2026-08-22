@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { 
   Bookmark, BookmarkCheck, Heart, Sparkles, FolderHeart, 
   Mail, Share2, FileText, MapPin, Calendar, HelpCircle, Info, MessageSquare, Sparkle,
-  Search, X, Volume2, Download, CheckCircle2, AlertCircle
+  Search, X, Volume2, Download, CheckCircle2, AlertCircle,
+  GraduationCap, CalendarDays, AudioLines, Rows3, Wind,
+  type LucideIcon
 } from 'lucide-react';
 
 // Import our new premium clinical modules
@@ -24,7 +26,7 @@ interface ToolItem {
   titleSw: string;
   descEn: string;
   descSw: string;
-  icon: string;
+  icon: LucideIcon;
   bgIcon: string;
   path: string;
   buttonTextEn: string;
@@ -212,7 +214,7 @@ export default function Toolkit({ language }: ToolkitProps) {
   const tools: ToolItem[] = [
     {
       id: 'micro-lesson',
-      icon: '🎓',
+      icon: GraduationCap,
       bgIcon: 'bg-[#2F6B4F]/10',
       titleEn: 'Autism World — Practice',
       titleSw: 'Dunia ya Autism — Mazoezi',
@@ -224,7 +226,7 @@ export default function Toolkit({ language }: ToolkitProps) {
     },
     {
       id: 'schedule',
-      icon: '🗂',
+      icon: CalendarDays,
       bgIcon: 'bg-[#C77700]/10',
       titleEn: 'Visual Schedules',
       titleSw: 'Ratiba za Picha',
@@ -236,7 +238,7 @@ export default function Toolkit({ language }: ToolkitProps) {
     },
     {
       id: 'cards',
-      icon: '🎴',
+      icon: AudioLines,
       bgIcon: 'bg-[#E89B2E]/10',
       titleEn: 'AAC Speech Cards',
       titleSw: 'Kadi za Sauti (AAC)',
@@ -248,7 +250,7 @@ export default function Toolkit({ language }: ToolkitProps) {
     },
     {
       id: 'board',
-      icon: '📢',
+      icon: Rows3,
       bgIcon: 'bg-[#2F6B4F]/10',
       titleEn: 'Communication Strip',
       titleSw: 'Ukanda wa Maneno',
@@ -260,7 +262,7 @@ export default function Toolkit({ language }: ToolkitProps) {
     },
     {
       id: 'calm',
-      icon: '🧘',
+      icon: Wind,
       bgIcon: 'bg-[#C77700]/10',
       titleEn: 'Sensory Calming Room',
       titleSw: 'Chumba cha Kutuliza',
@@ -608,7 +610,9 @@ export default function Toolkit({ language }: ToolkitProps) {
                     <div key={tool.id} className="border-2 border-gray-100 rounded-2xl p-5 hover:border-[#C77700]/30 transition-all flex flex-col justify-between">
                       <div>
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-3xl">{tool.icon}</span>
+                          <span className="w-9 h-9 rounded-lg bg-[#2D3748]/5 flex items-center justify-center shrink-0">
+                            <tool.icon className="w-4 h-4 text-[#2D3748]" strokeWidth={2} />
+                          </span>
                           <h5 className="font-bold text-base text-[#2D3748]">
                             {language === 'en' ? tool.titleEn : tool.titleSw}
                           </h5>
@@ -804,8 +808,8 @@ export default function Toolkit({ language }: ToolkitProps) {
                       className="bg-white rounded-2xl p-4 border border-[#2F6B4F]/10 shadow-sm flex items-center justify-between gap-4 hover:shadow transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 ${tool.bgIcon} rounded-xl flex items-center justify-center text-xl shrink-0`}>
-                          {tool.icon}
+                        <div className={`w-10 h-10 ${tool.bgIcon} rounded-xl flex items-center justify-center shrink-0`}>
+                          <tool.icon className="w-4 h-4 text-[#2D3748]" strokeWidth={2} />
                         </div>
                         <div>
                           <h4 className="text-sm font-bold text-[#2D3748] line-clamp-1">
@@ -877,8 +881,8 @@ export default function Toolkit({ language }: ToolkitProps) {
                       </button>
 
                       <div className="pr-8">
-                        <div className={`w-12 h-12 ${tool.bgIcon} rounded-2xl flex items-center justify-center text-2xl mb-4`}>
-                          {tool.icon}
+                        <div className={`w-12 h-12 ${tool.bgIcon} rounded-2xl flex items-center justify-center mb-4`}>
+                          <tool.icon className="w-5 h-5 text-[#2D3748]" strokeWidth={1.75} />
                         </div>
                         <h3 className="text-xl font-bold text-[#2D3748] mb-2">
                           {language === 'en' ? tool.titleEn : tool.titleSw}
